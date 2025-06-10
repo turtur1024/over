@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>客服聊天假裝器 - 現實黑色幽默版</title>
+  <style>
+    body {
+      font-family: 'Microsoft JhengHei', Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .chat-container {
+      width: 360px;
+      max-width: 100%;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .chat-window {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      border-bottom: 1px solid #ddd;
+    }
+    .message {
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .user {
+      text-align: right;
+      color: #333;
+    }
+    .user .text {
+      display: inline-block;
+      background: #007bff;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 15px 15px 0 15px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+    .agent {
+      text-align: left;
+      color: #666;
+    }
+    .agent .text {
+      display: inline-block;
+      background: #eee;
+      padding: 8px 12px;
+      border-radius: 15px 15px 15px 0;
+      max-width: 80%;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+    .input-area {
+      display: flex;
+      padding: 10px;
+      background: #fafafa;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 8px 12px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+    }
+    button {
+      margin-left: 10px;
+      background: #007bff;
+      border: none;
+      color: white;
+      padding: 0 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    button:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-window" id="chatWindow">
+      <div class="message agent"><div class="text">您好，請問有什麼需要幫忙的嗎？</div></div>
+    </div>
+    <form id="chatForm" class="input-area" autocomplete="off">
+      <input type="text" id="userInput" placeholder="輸入訊息..." required />
+      <button type="submit">送出</button>
+    </form>
+  </div>
+
+  <script>
+    const chatWindow = document.getElementById('chatWindow');
+    const chatForm = document.getElementById('chatForm');
+    const userInput = document.getElementById('userInput');
+
+    // 現實風黑色幽默公關語句清單
+    const darkHumorReplies = [
+      "抱歉，您的訂單正在排隊，前面還有許多客戶。",
+      "目前外送員正全力趕路，請您耐心等候。",
+      "系統繁忙，您的訂單需要額外處理時間。",
+      "配送時間較長，感謝您的理解與支持。",
+      "外送狀態異常，客服正在協調中，請稍後。",
+      "配送過程中遇到不可抗力因素，感謝您的體諒。",
+      "訂單資料正在核對，確保不會出錯。",
+      "您的訂單正在等待下一班外送員取件。",
+      "目前訂單量激增，正在加派人手處理。",
+      "外送途中發生延誤，已通知相關單位加速。"
+    ];
+
+    // 新增訊息到聊天視窗
+    function addMessage(text, sender) {
+      const msgDiv = document.createElement('div');
+      msgDiv.classList.add('message', sender);
+      const textDiv = document.createElement('div');
+      textDiv.className = 'text';
+      textDiv.textContent = text;
+      msgDiv.appendChild(textDiv);
+      chatWindow.appendChild(msgDiv);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    chatForm.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const userText = userInput.value.trim();
+      if (!userText) return;
+
+      // 顯示使用者訊息
+      addMessage(userText, 'user');
+      userInput.value = '';
+      userInput.disabled = true;
+      chatForm.querySelector('button').disabled = true;
+
+      // 先回覆正在查詢
+      addMessage('正在為您查詢…', 'agent');
+
+      // 等2秒後改成隨機黑色幽默公關語
+      setTimeout(() => {
+        // 移除剛剛的「正在為您查詢…」
+        const msgs = chatWindow.querySelectorAll('.message.agent');
+        if (msgs.length > 0) {
+          msgs[msgs.length - 1].remove();
+        }
+        // 顯示隨機公關語
+        const reply = darkHumorReplies[Math.floor(Math.random() * darkHumorReplies.length)];
+        addMessage(reply, 'agent');
+
+        // 恢復輸入框
+        userInput.disabled = false;
+        chatForm.querySelector('button').disabled = false;
+        userInput.focus();
+      }, 2000);
+    });
+  </script>
+</body>
+</html>

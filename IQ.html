@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>🧠 免費 IQ 測驗</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fdf6e3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .quiz-box {
+      background: white;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 20px 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 400px;
+    }
+
+    .question {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .payment-box {
+      margin-top: 20px;
+      border-top: 1px dashed #ccc;
+      padding-top: 15px;
+      color: red;
+      font-weight: bold;
+    }
+
+    .censored-iq {
+      font-size: 36px;
+      margin-top: 10px;
+      letter-spacing: 3px;
+      filter: blur(3px);
+      user-select: none;
+    }
+
+    .unlock-btn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: green;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .unlock-btn:hover {
+      background-color: darkgreen;
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz-box" id="quiz">
+  <div class="question" id="question">你準備好了嗎？</div>
+  <div id="options">
+    <button class="btn" onclick="nextStep('yes')">是</button>
+    <button class="btn" onclick="nextStep('no')">否</button>
+  </div>
+</div>
+
+<script>
+  let step = 0;
+
+  function nextStep(answer) {
+    const question = document.getElementById('question');
+    const options = document.getElementById('options');
+
+    if (step === 0) {
+      if (answer === 'yes') {
+        question.textContent = '你知道你是誰嗎？';
+        options.innerHTML = `
+          <button class="btn" onclick="nextStep('know')">我知道</button>
+          <button class="btn" onclick="nextStep('dontknow')">我不知道</button>
+        `;
+        step++;
+      } else {
+        question.textContent = '好的，等你準備好再說。';
+        options.innerHTML = '';
+      }
+    } else if (step === 1) {
+      question.textContent = '你的 IQ 等級是：🍌 香蕉';
+      options.innerHTML = '';
+      
+      const result = document.createElement('div');
+      result.className = 'payment-box';
+      result.innerHTML = `
+        請付款 <strong>$500</strong> 解鎖智商報告
+        <div class="censored-iq">1█8</div>
+        <button class="unlock-btn" onclick="window.location.href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=0gcJCdgAo7VqN5tD'">
+          解鎖報告
+        </button>
+      `;
+      document.getElementById('quiz').appendChild(result);
+      step++;
+    }
+  }
+</script>
+
+</body>
+</html>
